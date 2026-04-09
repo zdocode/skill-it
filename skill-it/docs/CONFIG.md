@@ -1,4 +1,4 @@
-# Career Ops Secure - Configuration Reference
+# skill-it — Configuration Reference
 
 ## Overview
 
@@ -8,8 +8,8 @@ This configuration uses strict validation. Invalid configurations will cause err
 
 ```yaml
 # Your identity - this stays private
-name: "Santiago Fernández"
-email: "santiago@example.com"
+name: "Dummy Name"
+email: "dummy@email.com"
 location: "San Francisco, CA"
 timezone: "America/Los_Angeles"
 
@@ -33,8 +33,8 @@ yearsExperience: 12
 remote: "remote"  # remote | hybrid | onsite | any
 
 # Optional - used in CV and outreach
-linkedin: "https://linkedin.com/in/santifer"
-portfolio: "https://santifer.io"
+linkedin: "https://linkedin.com/in/your-profile"
+portfolio: "https://your-portfolio.com"
 
 # ⚠️ SECURITY: NEVER enable auto-apply without human review
 allowAutoApply: false
@@ -103,29 +103,29 @@ Allowed values for `status` in tracker:
 User-specific customizations that override system defaults:
 
 ```markdown
-# User Profile - Career-Ops Customizations
+# User Profile - skill-it Customizations
 
 ## Archetype Priorities (your targeting)
 
 ### Agentic / Multi-Agent
-My strongest fit. I have 4 years building conversational AI agents and 2 years
+My strongest fit. I have X years building conversational AI agents and Y years
 leading agentic workflow design. Key proof points:
-- Built VAPI voice agents handling 50K+ calls/month
-- Designed multi-agent orchestration with LangGraph
+- Built voice agents handling 50K+ calls/month
+- Designed multi-agent orchestration
 - Implemented HITL approval workflows
 
 ### LLMOps
 Secondary. Experience with model deployment and monitoring.
-- 3 years LLMOps at Scale AI
+- X years LLMOps at company
 - Deployed Llama 2 production pipeline
 - Built eval framework for RAG applications
 
 ## Negotiation Position
 
-- **Current comp:** $185K base + 0.05% equity
-- **Target:** $220K base + 0.1% equity minimum
-- **Walk-away:** Below $200K total comp
-- **Leverage:** Currently have 2 competing offers
+- **Current comp:** $BASE + % equity
+- **Target:** $TARGET_BASE + % equity minimum
+- **Walk-away:** Below $MIN_TOTAL comp
+- **Leverage:** Currently have competing offers
 
 ## red_flags (avoid these companies)
 - Any role requiring >50% travel
