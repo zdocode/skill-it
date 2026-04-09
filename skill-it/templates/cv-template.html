@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{NAME}} — CV</title>
+
+  <!-- SECURITY: Strict Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none';
+                 style-src 'unsafe-inline' 'self';
+                 font-src 'self' data:;
+                 img-src 'self' data:;
+                 script-src 'none';
+                 object-src 'none';
+                 frame-ancestors 'none';
+                 base-uri 'self';">
+
+  <style>
+    /* Fonts */
+    @font-face {
+      font-family: 'Space Grotesk';
+      src: url('./fonts/space-grotesk-latin.woff2') format('woff2');
+      font-weight: 300 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'DM Sans';
+      src: url('./fonts/dm-sans-latin.woff2') format('woff2');
+      font-weight: 100 1000;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Reset */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Page size */
+    @page {
+      size: {{PAGE_SIZE}};
+      margin: 0.6in;
+    }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 11px;
+      line-height: 1.6;
+      color: #1a1a2e;
+      background: white;
+      max-width: 8.5in;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #1a1a2e;
+    }
+
+    .header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a2e;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      font-size: 10.5px;
+      color: #555;
+      margin-top: 6px;
+    }
+
+    .contact a {
+      color: #555;
+      text-decoration: none;
+    }
+
+    .contact .separator {
+      color: #ccc;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #1a1a2e;
+      border-bottom: 1.5px solid #e2e2e2;
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+    }
+
+    /* Summary */
+    .summary {
+      font-size: 11px;
+      line-height: 1.7;
+      color: #2f2f2f;
+    }
+
+    /* Experience */
+    .job {
+      margin-bottom: 14px;
+    }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 3px;
+    }
+
+    .company {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #2563eb;
+    }
+
+    .period {
+      font-size: 10.5px;
+      color: #777;
+      white-space: nowrap;
+    }
+
+    .role {
+      font-size: 11px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .job ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    .job li {
+      font-size: 10.5px;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .job li strong {
+      font-weight: 600;
+    }
+
+    /* Keywords - ATS optimization */
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      margin-top: 8px;
+    }
+
+    .keyword {
+      font-size: 9.5px;
+      color: #2563eb;
+      background: #eff6ff;
+      padding: 2px 8px;
+      border-radius: 2px;
+      border: 1px solid #dbeafe;
+    }
+
+    /* Avoid page breaks inside sections */
+    .avoid-break,
+    .job,
+    .project,
+    .edu-item {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* Print optimization */
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      a {
+        text-decoration: none;
+        color: #1a1a2e;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header avoid-break">
+    <h1>{{NAME}}</h1>
+    <div class="contact">
+      <span>{{EMAIL}}</span>
+      <span class="separator">|</span>
+      <a href="{{LINKEDIN}}">LinkedIn</a>
+      <span class="separator">|</span>
+      <a href="{{PORTFOLIO}}">Portfolio</a>
+      <span class="separator">|</span>
+      <span>{{LOCATION}}</span>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  {{SUMMARY}}
+
+  <!-- Work Experience -->
+  {{EXPERIENCE}}
+
+  <!-- Skills & Keywords -->
+  <div class="section avoid-break">
+    <div class="section-title">Skills & Technologies</div>
+    <div class="skills">
+      {{SKILLS}}
+    </div>
+    {{#if KEYWORDS}}
+    <div class="keywords">
+      {{#each KEYWORDS}}
+      <span class="keyword">{{this}}</span>
+      {{/each}}
+    </div>
+    {{/if}}
+  </div>
+
+  <!-- Education -->
+  {{EDUCATION}}
+
+</body>
+</html>
