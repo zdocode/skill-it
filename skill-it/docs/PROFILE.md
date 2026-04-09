@@ -10,26 +10,24 @@ This configuration uses strict validation. Invalid configurations will cause err
 # Your identity - this stays private
 name: "Dummy Name"
 email: "dummy@email.com"
-location: "San Francisco, CA"
-timezone: "America/Los_Angeles"
+location: "New York, NY"
+timezone: "America/New_York"
 
 # Job search preferences
 targetRoles:
   - "Senior AI Engineer"
-  - "Head of Applied AI"
-  - "LLMOps Lead"
+  - "Senior AI Architect"
 
 targetArchetypes:
   - "Agentic"
-  - "LLMOps"
   - "Platform Engineer"
 
 salaryTarget:
-  min: 180000
+  min: 190000
   max: 250000
   currency: "USD"
 
-yearsExperience: 12
+yearsExperience: 27
 remote: "remote"  # remote | hybrid | onsite | any
 
 # Optional - used in CV and outreach
@@ -67,8 +65,8 @@ title_filter:
     - "Principal"
 
 search_queries:
-  - name: "Ashby — AI Engineer"
-    query: 'site:jobs.ashbyhq.com "AI Engineer" OR "LLM Engineer" remote'
+  - name: "Company — AI Engineer"
+    query: 'site:jobs.company.com "AI Engineer" OR "LLM Engineer" remote'
     enabled: true
 
 tracked_companies:
