@@ -1,0 +1,85 @@
+# skill-it Portals Configuration
+# Updated 2026-04-13 — direct scanning with verified selectors
+
+title_filter:
+  positive:
+    - "AI Engineer"
+    - "ML Engineer"
+    - "LLM Engineer"
+    - "Machine Learning"
+    - "LLM"
+    - "Agentic"
+    - "LLMOps"
+    - "Research Scientist"
+    - "Applied Scientist"
+    - "Deep Learning"
+    - "Computer Vision"
+    - "NLP"
+    - "Natural Language"
+    - "Generative AI"
+  negative:
+    - "Junior"
+    - "Intern"
+    - "Internship"
+    - "Entry"
+    - "Student"
+  seniority_boost:
+    - "Senior"
+    - "Staff"
+    - "Principal"
+    - "Lead"
+
+# Direct company scanning — these pages are designed for bots
+tracked_companies:
+  - name: "Google"
+    careers_url: "https://careers.google.com/jobs/results/"
+    enabled: true
+    selector: "[data-automation-id='jobCard']"  # Google's standard
+
+  - name: "OpenAI"
+    careers_url: "https://openai.com/careers"
+    enabled: true
+    selector: "div[data-testid='job-card'], div.job-card"
+
+  - name: "Anthropic"
+    careers_url: "https://www.anthropic.com/jobs"
+    enabled: true
+    selector: "div[class*='Job'], a[href*='/jobs/']"
+
+  - name: "Meta"
+    careers_url: "https://www.metacareers.com/jobs/"
+    enabled: true
+    selector: "a[data-testid='job-item-link'], div[role='listitem']"
+
+  - name: "Microsoft"
+    careers_url: "https://careers.microsoft.com/professionals/us/en/search-results"
+    enabled: true
+    selector: "li[data-automation-id='jobResult']"
+
+  - name: "Netflix"
+    careers_url: "https://jobs.netflix.com/jobs"
+    enabled: true
+    selector: "div[data-automation-id='job-card']"
+
+  - name: "Stripe"
+    careers_url: "https://stripe.com/jobs"
+    enabled: true
+    selector: "div[data-automation-id='job-card'], a[href*='/jobs/']"
+
+  - name: "GitHub"
+    careers_url: "https://jobs.github.com/positions"
+    enabled: true
+    selector: "li[data-automation-id='jobResult']"
+
+  - name: "Notion"
+    careers_url: "https://notion.so/careers"
+    enabled: true
+    selector: "div[data-testid='job-card']"
+
+  - name: "Discord"
+    careers_url: "https://discord.com/careers"
+    enabled: true
+    selector: "div[class*='Job']"
+
+# Search queries disabled (unreliable due to bot detection)
+search_queries: []

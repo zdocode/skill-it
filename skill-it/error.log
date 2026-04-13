@@ -1,0 +1,7 @@
+❌ Failed: TypeError: Cannot read properties of null (reading 'prepare')
+    at getNextApplicationNumber (file:///home/latish/.openclaw/workspace/skill-it/dist/database/index.js:69:20)
+    at evaluateOffer (file:///home/latish/.openclaw/workspace/skill-it/dist/evaluation/evaluator.js:14:23)
+    at Command.<anonymous> (file:///home/latish/.openclaw/workspace/skill-it/dist/index.js:25:34)
+    at async Command.parseAsync (/home/latish/.openclaw/workspace/skill-it/node_modules/commander/lib/command.js:936:5)
+    at async main (file:///home/latish/.openclaw/workspace/skill-it/dist/index.js:125:5)
+    at async file:///home/latish/.openclaw/workspace/skill-it/dist/index.js:139:5

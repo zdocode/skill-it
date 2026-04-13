@@ -7,6 +7,7 @@
 import { Command } from 'commander';
 import { getProjectRoot } from './utils/path.js';
 import { logAudit } from './utils/logger.js';
+import { initializeDatabase } from './database/index.js';
 
 async function main() {
   console.log('skill-it v2.0.0 🔒');
@@ -48,10 +49,25 @@ async function main() {
 
   program
     .command('scan')
-    .description('Scan portals (stub)')
-    .action(() => {
-      logAudit('scan', {});
-      console.log('✅ Scan stub - implement Playwright scanner');
+    .description('Scan configured portals for new job listings')
+    .option('-c, --company <name>', 'Scan a specific company only')
+    .option('-m, --maxOffers <number>', 'Maximum number of offers to process', '50')
+    .action(async (options: { company?: string; maxOffers?: string }) => {
+      logAudit('scan_start', options);
+      try {
+        const { runScan } = await import('./scanner/portal-scanner.js');
+        const result = await runScan({
+          company: options.company,
+          maxOffers: options.maxOffers ? parseInt(options.maxOffers, 10) : 50,
+        });
+        console.log('\n✅ Scan complete');
+        console.log(`Found: ${result.found}, New: ${result.new}`);
+        logAudit('scan_complete', result);
+      } catch (error) {
+        console.error('❌ Scan failed:', error);
+        logAudit('scan_error', { error: String(error) });
+        process.exit(1);
+      }
     });
 
   program
@@ -149,6 +165,8 @@ try {
       mkdirSync(fullPath, { recursive: true, mode: 0o700 });
     }
   }
+
+  initializeDatabase();
   
   await main();
 } catch (error) {

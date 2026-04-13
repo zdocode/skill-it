@@ -1,0 +1,150 @@
+# skill-it Portals Configuration
+# Updated: 2026-04-13 — switched to search queries for reliability
+
+title_filter:
+  positive:
+    - "AI Engineer"
+    - "ML Engineer"
+    - "LLM Engineer"
+    - "Machine Learning"
+    - "LLM"
+    - "Agentic"
+    - "LLMOps"
+    - "Research Scientist"
+    - "Applied Scientist"
+    - "Deep Learning"
+    - "Computer Vision"
+    - "NLP"
+    - "Natural Language"
+  negative:
+    - "Junior"
+    - "Intern"
+    - "Internship"
+    - "Entry"
+    - "Student"
+    - "Manager"  # exclude management unless you want it
+  seniority_boost:
+    - "Senior"
+    - "Staff"
+    - "Principal"
+    - "Lead"
+    - "Staff"
+    - "Manager"
+
+search_queries:
+  # Big Tech AI Labs
+  - name: "Google — AI/ML Roles"
+    query: 'site:careers.google.com "AI Engineer" OR "ML Engineer" OR "LLM Engineer" OR "Research Scientist" OR "Applied Scientist"'
+    enabled: true
+
+  - name: "OpenAI — Research & Engineering"
+    query: 'site:openai.com/careers "Research Scientist" OR "ML Engineer" OR "AI Engineer" OR "LLM"'
+    enabled: true
+
+  - name: "Anthropic — AI Safety & Research"
+    query: 'site:anthropic.com/jobs "AI Engineer" OR "ML Engineer" OR "Research Scientist" OR "LLMOps"'
+    enabled: true
+
+  - name: "Meta — FAIR & GenAI"
+    query: 'site:metacareers.com/jobs "AI Engineer" OR "ML Engineer" OR "Research Scientist" OR "LLM" OR "Generative AI"'
+    enabled: true
+
+  - name: "Microsoft — AI Engineering"
+    query: 'site:careers.microsoft.com/professionals/us/en "AI Engineer" OR "ML Engineer" OR "Research" OR "LLM"'
+    enabled: true
+
+  # Unicorns & Startups
+  - name: "OpenAI (jobs.ashbyhq)"
+    query: 'site:jobs.ashbyhq.com/openai "ML Engineer" OR "AI Engineer" OR "Research"'
+    enabled: true
+
+  - name: "Anthropic (boards.greenhouse)"
+    query: 'site:boards.greenhouse.io/anthropic "AI" OR "ML" OR "Research"'
+    enabled: true
+
+  - name: "Cohere"
+    query: 'site:boards.greenhouse.io/cohere "ML Engineer" OR "AI Engineer" OR "LLM"'
+    enabled: true
+
+  - name: "Scale AI"
+    query: 'site:scale.com/careers "AI" OR "ML" OR "Research"'
+    enabled: true
+
+  - name: "Hugging Face"
+    query: 'site:huggingface.co/jobs "ML Engineer" OR "AI Engineer" OR "Research Scientist"'
+    enabled: true
+
+  - name: "RunwayML"
+    query: 'site:runwayml.com/jobs "ML Engineer" OR "Computer Vision" OR "AI"'
+    enabled: true
+
+  - name: "Replicate"
+    query: 'site:replicate.com/jobs "ML Engineer" OR "AI Engineer"'
+    enabled: true
+
+  - name: "Perplexity AI"
+    query: 'site:perplexity.ai/careers "AI Engineer" OR "ML Engineer" OR "Research"'
+    enabled: true
+
+  # Finance & Quant
+  - name: "Two Sigma"
+    query: 'site:careers.twosigma.com "AI" OR "ML" OR "Research Scientist"'
+    enabled: true
+
+  - name: "Citadel"
+    query: 'site:citadel.com/careers "AI Engineer" OR "ML Engineer" OR "Quantitative Researcher"'
+    enabled: true
+
+  - name: "DE Shaw"
+    query: 'site:deshaw.com/careers "AI" OR "ML" OR "Research"'
+    enabled: true
+
+  - name: "Jane Street"
+    query: 'site:janestreet.com/careers "Technology" OR "Quantitative"'
+    enabled: true
+
+  # Other Tech
+  - name: "GitHub (Copilot)"
+    query: 'site:jobs.github.com "AI Engineer" OR "ML Engineer" OR "Copilot"'
+    enabled: true
+
+  - name: "Notion (AI features)"
+    query: 'site:notion.so/careers "AI Engineer" OR "ML Engineer"'
+    enabled: true
+
+  - name: "Discord"
+    query: 'site:discord.com/careers "AI Engineer" OR "ML Engineer" OR "Trust & Safety"'
+    enabled: true
+
+  - name: "Stripe (AI payments)"
+    query: 'site:stripe.com/jobs "AI Engineer" OR "ML Engineer" OR "Risk" OR "Fraud"'
+    enabled: true
+
+  - name: "Rivian (Autonomous)"
+    query: 'site:rivian.com/careers "Autonomous" OR "Perception" OR "ML" OR "AI"'
+    enabled: true
+
+  # Labs & Research Orgs
+  - name: "OpenAI Research"
+    query: 'site:openai.com/research "Research Scientist" OR "PhD" OR "Postdoc"'
+    enabled: true
+
+  - name: "DeepMind (if public)"
+    query: 'site:deepmind.com/careers "Research Scientist" OR "AI Engineer"'
+    enabled: true
+
+  - name: "FAIR (Meta AI Research)"
+    query: 'site:ai.facebook.com/careers "Research Scientist" OR "Engineer"'
+    enabled: true
+
+# Legacy direct-selector entries (disabled — keep for reference)
+# tracked_companies:
+#   - name: "Anthropic"
+#     careers_url: "https://www.anthropic.com/jobs"
+#     enabled: false
+#     selector: "div[class*='job']"
+#
+#   - name: "OpenAI"
+#     careers_url: "https://openai.com/careers"
+#     enabled: false
+#     selector: "section[data-testid='job-card']"

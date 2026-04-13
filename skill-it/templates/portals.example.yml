@@ -1,0 +1,35 @@
+# skill-it Portals Configuration
+# Copy this file to portals.yml to customize job scanning.
+
+title_filter:
+  positive:
+    - "AI"
+    - "ML"
+    - "LLM"
+    - "Agent"
+    - "LLMOps"
+  negative:
+    - "Junior"
+    - "Intern"
+    - ".NET"
+  seniority_boost:
+    - "Senior"
+    - "Staff"
+    - "Principal"
+
+search_queries:
+  - name: "Ashby — AI Engineer"
+    query: 'site:jobs.ashbyhq.com "AI Engineer" OR "LLM Engineer" remote'
+    enabled: true
+
+tracked_companies:
+  - name: "Anthropic"
+    careers_url: "https://www.anthropic.com/jobs"
+    enabled: true
+    selector: "div[class*='job']"
+  - name: "OpenAI"
+    careers_url: "https://openai.com/careers"
+    enabled: true
+    selector: "section[data-testid='job-card']"
+
+# Add more companies as needed. See docs/CONFIG.md for schema details.

@@ -11,7 +11,7 @@
     "build": "tsc && chmod +x dist/index.js",
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
-    "doctor": "node dist/doctor.js",
+    "doctor": "node dist/index.js doctor",
     "verify": "node dist/verify-security.js",
     "verify-security": "node dist/verify-security.js",
     "harden": "node dist/scripts/harden.js",

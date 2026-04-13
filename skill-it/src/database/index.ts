@@ -35,7 +35,12 @@ export function initializeDatabase(): Database.Database {
   if (db) return db;
   const dataDir = dirname(DB_PATH);
   if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true, mode: 0o700 });
-  db = new Database(DB_PATH);
+  try {
+    db = new Database(DB_PATH);
+  } catch (err) {
+    console.error('Failed to open database:', err);
+    throw err;
+  }
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
   try { chmodSync(DB_PATH, 0o600); } catch {}

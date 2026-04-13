@@ -5,7 +5,7 @@ import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { getProjectRoot } from '../utils/path.js';
 import { logAudit } from '../utils/logger.js';
-import { getNextApplicationNumber } from '../database/index.js';
+import { getNextApplicationNumber, initializeDatabase } from '../database/index.js';
 
 const PROJECT_ROOT = getProjectRoot();
 
@@ -25,6 +25,9 @@ export interface EvaluationResult {
 }
 
 export async function evaluateOffer(input: EvaluationInput): Promise<EvaluationResult> {
+  // Ensure DB is initialized before querying
+  initializeDatabase();
+
   const jdText = input.source === 'url' ? `Fetched from ${input.content}` : input.content;
   const archetype = 'LLMOps'; // stub detection
   const score = 4.2; // stub score
