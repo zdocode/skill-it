@@ -1,5 +1,5 @@
 # skill-it Portals Configuration
-# Updated 2026-04-13 — direct scanning with verified selectors
+# Updated 2026-04-13 — robust multi-selector scanning
 
 title_filter:
   positive:
@@ -17,6 +17,13 @@ title_filter:
     - "NLP"
     - "Natural Language"
     - "Generative AI"
+    - "Safety"
+    - "Alignment"
+    - "Interpretability"
+    - "Systems"
+    - "Infrastructure"
+    - "Engineer"
+    - "Scientist"
   negative:
     - "Junior"
     - "Intern"
@@ -29,57 +36,242 @@ title_filter:
     - "Principal"
     - "Lead"
 
-# Direct company scanning — these pages are designed for bots
+# Direct company scanning — multi-selector fallback
 tracked_companies:
   - name: "Google"
     careers_url: "https://careers.google.com/jobs/results/"
     enabled: true
-    selector: "[data-automation-id='jobCard']"  # Google's standard
+    selectors:
+      - "div.Ln1EL"
+      - "a[jsname='hSRGPd']"
+      - "h3.QJPWVe"
+      - "span.RP7SMd"
+      - "span.r0wTof"
 
   - name: "OpenAI"
     careers_url: "https://openai.com/careers"
-    enabled: true
-    selector: "div[data-testid='job-card'], div.job-card"
+    enabled: false
+    selectors:
+      - "div[data-testid='job-card']"
+      - "div.job-card"
+      - "a[href*='/careers']"
+      - "section[data-testid='job-card']"
 
   - name: "Anthropic"
     careers_url: "https://www.anthropic.com/jobs"
-    enabled: true
-    selector: "div[class*='Job'], a[href*='/jobs/']"
+    enabled: false
+    selectors:
+      - "div[class*='Job']"
+      - "a[href*='/jobs/']"
+      - "[data-testid='job-card']"
 
   - name: "Meta"
     careers_url: "https://www.metacareers.com/jobs/"
-    enabled: true
-    selector: "a[data-testid='job-item-link'], div[role='listitem']"
+    enabled: false
+    selectors:
+      - "a[data-testid='job-item-link']"
+      - "div[role='listitem']"
+      - "a[href*='/jobs/']"
+      - "div[class*='job']"
 
   - name: "Microsoft"
     careers_url: "https://careers.microsoft.com/professionals/us/en/search-results"
-    enabled: true
-    selector: "li[data-automation-id='jobResult']"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
 
   - name: "Netflix"
     careers_url: "https://jobs.netflix.com/jobs"
-    enabled: true
-    selector: "div[data-automation-id='job-card']"
+    enabled: false
+    selectors:
+      - "div[data-automation-id='job-card']"
+      - "div[class*='job']"
+      - "a[href*='/jobs/']"
 
   - name: "Stripe"
     careers_url: "https://stripe.com/jobs"
-    enabled: true
-    selector: "div[data-automation-id='job-card'], a[href*='/jobs/']"
+    enabled: false
+    selectors:
+      - "div[data-automation-id='job-card']"
+      - "a[href*='/jobs/']"
+      - "div[class*='Job']"
 
   - name: "GitHub"
     careers_url: "https://jobs.github.com/positions"
-    enabled: true
-    selector: "li[data-automation-id='jobResult']"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "a[href*='/positions/']"
+      - "div[class*='job']"
 
   - name: "Notion"
     careers_url: "https://notion.so/careers"
-    enabled: true
-    selector: "div[data-testid='job-card']"
+    enabled: false
+    selectors:
+      - "div[data-testid='job-card']"
+      - "a[href*='/careers']"
+      - "div[class*='job']"
 
   - name: "Discord"
     careers_url: "https://discord.com/careers"
-    enabled: true
-    selector: "div[class*='Job']"
+    enabled: false
+    selectors:
+      - "div[class*='Job']"
+      - "a[href*='/jobs']"
+      - "div[data-testid='job-card']"
 
-# Search queries disabled (unreliable due to bot detection)
+  - name: "Microsoft"
+    careers_url: "https://careers.microsoft.com/professionals/us/en/search-results"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - "[data-testid='job-card']"
+  
+  - name: "Amazon"
+    careers_url: "https://www.amazon.jobs/en/search"
+    enabled: false
+    selectors:
+      - "div.job-tile"
+      - "[data-testid='job-card']"
+      - "li[data-automation-id='jobResult']"
+      - "article.job"
+      - "a[href*='/jobs/']"
+  
+  - name: "Google2"
+    careers_url: "https://careers.google.com/jobs/results/"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".search-result"
+  
+  - name: "Capital One"
+    careers_url: "https://www.capitalonecareers.com/search-jobs"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".job-card"
+  
+  - name: "Inova Health System"
+    careers_url: "https://www.inova.org/careers"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".position"
+  
+  - name: "Booz Allen Hamilton"
+    careers_url: "https://careers.boozallen.com/"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".job-listing"
+  
+  - name: "General Dynamics"
+    careers_url: "https://careers.general-dynamics.com/"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".job-tile"
+  
+  - name: "SAIC"
+    careers_url: "https://www.saic.com/careers"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".search-result"
+  
+  - name: "Leidos"
+    careers_url: "https://careers.leidos.com/search-jobs"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - "[data-automation-id='job-card']"
+  
+  - name: "Northrop Grumman"
+    careers_url: "https://careers.northropgrumman.com/"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".job-card"
+  
+  - name: "Peraton"
+    careers_url: "https://careers.peraton.com/search"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".job-listing"
+  
+  - name: "Navy Federal Credit Union"
+    careers_url: "https://www.navyfederal.org/careers.html"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".position-listing"
+  
+  - name: "DXC Technology"
+    careers_url: "https://careers.dxc.com/"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - "[data-automation-id='job-card']"
+  
+  - name: "Equinix"
+    careers_url: "https://careers.equinix.com/"
+    enabled: false
+    selectors:
+      - "li[data-automation-id='jobResult']"
+      - "div[class*='job']"
+      - "a[href*='jobs']"
+      - "li[role='listitem']"
+      - ".job-tile"
+  
+  - name: "Freddie Mac"
+    careers_url: "https://careers.freddiemac.com/us/en/search-results"
+    enabled: true
+    selectors:
+      - "li[data-ph-at-id='jobs-list-item']"
+      - "li.jobs-list-item[data-ph-at-id='jobs-list-item']"
+      - "a[data-ph-at-id='job-link']"
+      - "li[role='listitem']"
+      - ".jobs-list-item"
+      - "a.job[data-ph-at-id='job-link']"
+  
 search_queries: []

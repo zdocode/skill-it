@@ -32,11 +32,20 @@ export interface Application {
 }
 
 export function initializeDatabase(): Database.Database {
-  if (db) return db;
+  console.log('DEBUG: initializeDatabase called');
+  if (db) {
+    console.log('DEBUG: db already initialized, returning');
+    return db;
+  }
   const dataDir = dirname(DB_PATH);
-  if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true, mode: 0o700 });
+  if (!existsSync(dataDir)) {
+    console.log('DEBUG: Creating data directory:', dataDir);
+    mkdirSync(dataDir, { recursive: true, mode: 0o700 });
+  }
   try {
+    console.log('DEBUG: Opening database at:', DB_PATH);
     db = new Database(DB_PATH);
+    console.log('DEBUG: Database opened, type:', typeof db);
   } catch (err) {
     console.error('Failed to open database:', err);
     throw err;
@@ -44,25 +53,29 @@ export function initializeDatabase(): Database.Database {
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
   try { chmodSync(DB_PATH, 0o600); } catch {}
-  
-  // Simple schema
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS applications (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      number INTEGER NOT NULL UNIQUE,
-      date TEXT NOT NULL,
-      company TEXT NOT NULL,
-      company_slug TEXT NOT NULL,
-      role TEXT NOT NULL,
-      role_slug TEXT NOT NULL,
-      score REAL,
-      status TEXT NOT NULL,
-      report_path TEXT NOT NULL,
-      created_at TEXT DEFAULT (datetime('now'))
-    );
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_app_unique ON applications(company_slug, role_slug);
-  `);
-  
+  try {
+    console.log('DEBUG: Creating schema...');
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS applications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        number INTEGER NOT NULL UNIQUE,
+        date TEXT NOT NULL,
+        company TEXT NOT NULL,
+        company_slug TEXT NOT NULL,
+        role TEXT NOT NULL,
+        role_slug TEXT NOT NULL,
+        score REAL,
+        status TEXT NOT NULL,
+        report_path TEXT NOT NULL,
+        created_at TEXT DEFAULT (datetime('now'))
+      );
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_app_unique ON applications(company_slug, role_slug);
+    `);
+    console.log('DEBUG: Schema created');
+  } catch (err) {
+    console.error('Schema error:', err);
+  }
+  console.log('DEBUG: initializeDatabase complete, db is', db ? 'set' : 'null');
   return db;
 }
 
@@ -100,7 +113,15 @@ export function getApplications(filters?: { status?: ApplicationStatus; limit?: 
 }
 
 export function getNextApplicationNumber(): number {
-  const row = db!.prepare('SELECT COALESCE(MAX(number), 0) + 1 as next FROM applications').get() as { next: number };
+  if (!db) {
+    console.log('DEBUG: getNextApplicationNumber: db was null, initializing now');
+    initializeDatabase();
+    if (!db) throw new Error('Database initialization failed — db still null after initializeDatabase()');
+  }
+  if (typeof db?.prepare !== 'function') {
+    throw new Error('Database connection is not valid — db.prepare is not a function. db=' + typeof db);
+  }
+  const row = db.prepare('SELECT COALESCE(MAX(number), 0) + 1 as next FROM applications').get() as { next: number };
   return row.next;
 }
 

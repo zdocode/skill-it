@@ -3,6 +3,7 @@
  */
 import { chromium, Browser, Page, BrowserContext } from 'playwright';
 import { join } from 'path';
+import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import {
   loadPortals,
 } from '../config/loader.js';
@@ -21,7 +22,7 @@ interface TrackedCompany {
   name: string;
   careers_url: string;
   enabled: boolean;
-  selector: string;
+  selectors: string[];
 }
 
 interface SearchQuery {
@@ -75,27 +76,79 @@ export async function runScan(params: { company?: string; maxOffers?: number }):
 
   console.log(`🔎 Starting scan of ${enabledCompanies.length} direct company(ies) + ${enabledQueries.length} search query(ies)...`);
 
-  const browser = await chromium.launch({ headless: true });
+  const headless = process.env.HEADLESS !== 'false';
+  const browser = await chromium.launch({ 
+    headless,
+    args: [
+      '--disable-blink-features=AutomationControlled',
+      '--disable-dev-shm-usage',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-extensions',
+      '--disable-background-networking',
+      '--disable-background-timer-throttling',
+      '--disable-renderer-backgrounding',
+      '--disable-device-discovery-notifications'
+    ]
+  });
   try {
     // Scan direct company career pages
     for (const company of enabledCompanies) {
       console.log(`\n📍 ${company.name} — ${company.careers_url}`);
       const context = await browser.newContext();
+      // Stealth: disable webdriver detection
+      await context.addInitScript(() => {
+        Object.defineProperty(navigator, 'webdriver', { get: () => false });
+      });
       const page = await context.newPage();
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+      });
 
-      try {
-        await page.goto(company.careers_url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-        await page.waitForSelector(company.selector, { timeout: 15000 });
+  try {
+        await page.goto(company.careers_url, { waitUntil: 'networkidle', timeout: 60000 });
+        // Wait for JS to render
+        await page.waitForTimeout(5000);
+        
+        // Scroll to trigger lazy loading
+        await page.evaluate(() => window.scrollBy(0, 500));
+        await page.waitForTimeout(2000);
 
-        const jobElements = await page.$$(company.selector);
-        console.log(`  Found ${jobElements.length} raw job element(s).`);
+        // Resolve selectors (support string or array for backwards compatibility)
+        const rawSelectors = company.selectors as string[] | string | undefined;
+        if (!rawSelectors) {
+          throw new Error(`Company missing 'selectors' configuration`);
+        }
+        const selectorList: string[] = Array.isArray(rawSelectors) ? rawSelectors : [rawSelectors];
+        let jobElements: any[] = [];
+        let usedSelector: string | null = null;
+
+        for (const sel of selectorList) {
+          try {
+            await page.waitForSelector(sel, { timeout: 5000 });
+            const els = await page.$$(sel);
+            if (els.length > 0) {
+              jobElements = els;
+              usedSelector = sel;
+              console.log(`  Found ${els.length} raw job element(s) using: ${sel}`);
+              break;
+            }
+          } catch (err) {
+            // Try next selector
+          }
+        }
+
+        if (jobElements.length === 0) {
+          throw new Error(`No job elements found with any selector: ${selectorList.join(', ')}`);
+        }
 
         for (const el of jobElements) {
           if (found >= maxOffers) break;
 
           // Extract title and link
-          const title = await el.evaluate(node => node.textContent?.trim() || '');
-          const link = await el.evaluate(node => {
+          const title = await el.evaluate((node: any) => node.textContent?.trim() || '');
+          const link = await el.evaluate((node: any) => {
             const a = node.querySelector('a');
             return a ? a.href : null;
           });
@@ -148,6 +201,15 @@ export async function runScan(params: { company?: string; maxOffers?: number }):
           }
         }
       } catch (err: any) {
+        // Save HTML for debugging any failure
+        try {
+          const debugDir = join(PROJECT_ROOT, 'scan-debug');
+          if (!existsSync(debugDir)) mkdirSync(debugDir, { recursive: true });
+          const html = await page.content();
+          const safeName = company.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          writeFileSync(join(debugDir, `${safeName}-error-${Date.now()}.html`), html);
+          console.log(`  📄 Saved error HTML to scan-debug/${safeName}-error.html`);
+        } catch {}
         console.error(`❌ Error scanning ${company.name}: ${err.message}`);
         logAudit('scan_company_error', { company: company.name, error: err.message });
       } finally {
@@ -159,7 +221,15 @@ export async function runScan(params: { company?: string; maxOffers?: number }):
     for (const query of enabledQueries) {
       console.log(`\n🔍 ${query.name} — search query`);
       const context = await browser.newContext();
+      // Stealth: disable webdriver detection
+      await context.addInitScript(() => {
+        Object.defineProperty(navigator, 'webdriver', { get: () => false });
+      });
       const page = await context.newPage();
+      await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+      });
 
       try {
         // Use Bing search
